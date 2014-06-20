@@ -19,6 +19,7 @@ package org.codehaus.mojo.versions;
  * under the License.
  */
 
+import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -127,8 +128,7 @@ public class LockSnapshotsMojo
         String lockedVersion = dep.getVersion();
 
         Artifact depArtifact =
-            artifactFactory.createArtifact( dep.getGroupId(), dep.getArtifactId(), dep.getVersion(), dep.getScope(),
-                                            dep.getType() );
+            artifactFactory.createDependencyArtifact( dep.getGroupId(), dep.getArtifactId(), VersionRange.createFromVersion(dep.getVersion()), dep.getType(), dep.getClassifier(), dep.getScope());
         try
         {
             resolver.resolve( depArtifact, getProject().getRemoteArtifactRepositories(), localRepository );
